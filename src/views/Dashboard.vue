@@ -18,7 +18,8 @@ const weather = {
   icon: '🌧️'
 }
 
-const greetings = ref('🌤️ 早安，张同学。今天有小雨，记得带伞。今天满课，是一场硬仗哦，加油！')
+const greetingTitle = ref('👋 早安，张同学')
+const greetingSubtitle = ref('今天有小雨，记得带伞。今天满课，是一场硬仗哦，加油！')
 
 const nextAction = ref({
   type: 'navigation', // 'navigation', 'study', 'service'
@@ -49,15 +50,28 @@ const shortcuts = [
     <!-- 1. 顶部：AI 动态问候与状态感知区 -->
     <div class="briefing-section">
       <div class="greeting-box glass-card">
-        <h2 class="greeting-text">{{ greetings }}</h2>
-        <div class="weather-tag">
-          {{ weather.icon }} {{ weather.desc }} {{ weather.temp }}
+        <div class="greeting-content">
+          <h2 class="greeting-title">{{ greetingTitle }}</h2>
+          <p class="greeting-subtitle">{{ greetingSubtitle }}</p>
+        </div>
+        <div class="weather-divider"></div>
+        <div class="weather-info">
+          <span class="weather-icon">{{ weather.icon }}</span>
+          <span class="weather-text">{{ weather.desc }} {{ weather.temp }}</span>
         </div>
       </div>
       <div class="alert-bar glass-card">
-        <el-icon class="alert-icon"><Warning /></el-icon>
-        <span class="alert-text">【科研看板紧急通知】李导师催促：请在下午 14:00 前提交文献综述初稿。</span>
-        <el-button type="danger" size="small" plain round>立即前往</el-button>
+        <div class="alert-header">
+          <div class="alert-title-wrap">
+            <el-icon class="alert-icon"><Warning /></el-icon>
+            <span class="alert-title">通知公告</span>
+            <span class="breath-dot"></span>
+          </div>
+          <el-button type="danger" size="small" link class="alert-btn">立即前往</el-button>
+        </div>
+        <div class="alert-content" title="【科研看板紧急通知】李导师催促：请在下午 14:00 前提交文献综述初稿。">
+          【科研看板紧急通知】李导师催促：请在下午 14:00 前提交文献综述初稿。
+        </div>
       </div>
     </div>
 
@@ -192,53 +206,167 @@ const shortcuts = [
 /* 顶部问候区 */
 .briefing-section {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 20px;
 }
 
 .greeting-box {
+  flex: 1;
   padding: 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: linear-gradient(to right, rgba(255,255,255,0.95), rgba(240,253,250,0.9));
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.greeting-text {
+.greeting-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.05);
+}
+
+.greeting-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.greeting-title {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-primary);
   margin: 0;
 }
 
-.weather-tag {
-  background: white;
-  padding: 6px 12px;
-  border-radius: 20px;
+.greeting-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.weather-divider {
+  width: 1px;
+  height: 36px;
+  background: rgba(0, 0, 0, 0.08);
+  margin: 0 24px;
+  flex-shrink: 0;
+}
+
+.weather-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.weather-icon {
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+}
+
+.weather-text {
   font-size: 14px;
   font-weight: 600;
-  border: 1px solid var(--glass-border);
   color: var(--text-secondary);
 }
 
 .alert-bar {
-  padding: 12px 20px;
+  flex: 0 0 280px;
+  box-sizing: border-box;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  background: linear-gradient(135deg, rgba(254, 242, 242, 0.95), rgba(255, 228, 230, 0.9));
+  border: 1px solid rgba(251, 113, 133, 0.25);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.alert-bar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(225, 29, 72, 0.08);
+}
+
+.alert-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.alert-title-wrap {
   display: flex;
   align-items: center;
-  gap: 12px;
-  background: #fffafa;
+  gap: 6px;
 }
 
 .alert-icon {
-  color: #ef4444;
-  font-size: 18px;
+  color: #e11d48;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
 }
 
-.alert-text {
-  flex: 1;
-  font-size: 14px;
-  color: #7f1d1d;
+.alert-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #9f1239;
+  letter-spacing: 0.5px;
+}
+
+.breath-dot {
+  width: 6px;
+  height: 6px;
+  background-color: #f43f5e;
+  border-radius: 50%;
+  display: inline-block;
+  animation: breath 2s infinite ease-in-out;
+}
+
+.alert-btn {
+  padding: 0;
+  height: auto;
+  font-size: 12px;
+  color: #be123c !important;
+  font-weight: 600;
+}
+
+.alert-btn:hover {
+  color: #e11d48 !important;
+  text-decoration: underline;
+}
+
+.alert-content {
+  font-size: 13px;
+  color: #4c0519;
+  line-height: 1.5;
   font-weight: 500;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@keyframes breath {
+  0% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.7);
+  }
+  70% {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 4px rgba(244, 63, 94, 0);
+  }
+  100% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 rgba(244, 63, 94, 0);
+  }
 }
 
 /* 主网格 */
